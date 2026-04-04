@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #e5e5e5;
+}
+
+/* Forensic Glass Effect */
+.glass {
+  @apply bg-forensic-bg-elevated/80 backdrop-blur-forensic border border-white/10 shadow-forensic-card;
+}
+
+/* Leaflet Map - Forensic Style */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #0a0a0a !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.leaflet-tile {
+  filter: grayscale(0.8) contrast(1.2) brightness(0.7) sepia(0.2);
+}
+
+/* Custom Forensic Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 94, 0, 0.3);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 94, 0, 0.5);
+}
+
+/* Forensic Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 94, 0, 0.1);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 94, 0, 0.2);
+    opacity: 0.95;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(5px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-fadeIn,
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes snapIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-snap-in {
+  animation: snapIn 0.1s ease-out;
+}
+
+/* Forensic Selection */
+::selection {
+  background-color: rgba(255, 94, 0, 0.3);
+  color: #e5e5e5;
+}
+
+/* Remove default input styles for forensic look */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(255, 94, 0, 0.5);
+}
+
+/* Monospace data values */
+.font-mono {
+  font-family: 'Courier New', Courier, monospace;
+  font-variant-numeric: tabular-nums;
+}
