@@ -42,18 +42,17 @@ const AdminDashboard = () => {
   const [showShipmentDropdown, setShowShipmentDropdown] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Fetch shipments on mount
+  // Fetch shipments on mount (exclude delivered)
   useEffect(() => {
     const fetchShipments = async () => {
       try {
         const res = await getAllShipments();
-        const shipmentList = res.data || [];
+        const shipmentList = (res.data || []).filter(s => s.status !== 'delivered');
         setShipments(shipmentList);
         
-        // Auto-select the most recent non-delivered shipment
-        const activeShipment = shipmentList.find(s => s.status !== 'delivered') || shipmentList[0];
-        if (activeShipment) {
-          setSelectedShipment(activeShipment);
+        // Auto-select the most recent shipment
+        if (shipmentList.length > 0) {
+          setSelectedShipment(shipmentList[0]);
         }
       } catch (err) {
         console.error('Error fetching shipments:', err);
@@ -149,7 +148,6 @@ const AdminDashboard = () => {
     switch (status) {
       case 'pending': return 'bg-forensic-sepia-warn/20 text-forensic-sepia-warn border-forensic-sepia-warn/30';
       case 'in_transit': return 'bg-forensic-orange/20 text-forensic-orange border-forensic-orange/30';
-      case 'delivered': return 'bg-forensic-green-live/20 text-forensic-green-live border-forensic-green-live/30';
       default: return 'bg-white/10 text-forensic-text-dim border-white/20';
     }
   };
@@ -158,7 +156,6 @@ const AdminDashboard = () => {
     switch (status) {
       case 'pending': return <Clock className="w-4 h-4" strokeWidth={1.5} />;
       case 'in_transit': return <Truck className="w-4 h-4" strokeWidth={1.5} />;
-      case 'delivered': return <CheckCircle className="w-4 h-4" strokeWidth={1.5} />;
       default: return <Package className="w-4 h-4" strokeWidth={1.5} />;
     }
   };
@@ -543,7 +540,7 @@ const AdminDashboard = () => {
         <Card className={`p-5 ${sensorData?.shock > 1.5 ? 'animate-pulse-glow' : ''}`} glow={sensorData?.shock > 1.5}>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-xs text-forensic-text-dim uppercase tracking-wide font-mono">EARTHQUAKE</p>
+              <p className="text-xs text-forensic-text-dim uppercase tracking-wide font-mono">SHOCK</p>
               <p className="text-2xl font-bold text-forensic-text mt-1 font-mono">
                 {sensorData?.shock?.toFixed(2) || '--'}g
               </p>

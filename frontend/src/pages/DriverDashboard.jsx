@@ -37,18 +37,17 @@ const DriverDashboard = () => {
   const [showShipmentDropdown, setShowShipmentDropdown] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Fetch shipments assigned to this driver
+  // Fetch shipments assigned to this driver (exclude delivered)
   useEffect(() => {
     const fetchShipments = async () => {
       try {
         const res = await getMyShipments();
-        const shipmentList = res.data || [];
+        const shipmentList = (res.data || []).filter(s => s.status !== 'delivered');
         setShipments(shipmentList);
         
-        // Auto-select the most recent non-delivered shipment
-        const activeShipment = shipmentList.find(s => s.status !== 'delivered') || shipmentList[0];
-        if (activeShipment) {
-          setSelectedShipment(activeShipment);
+        // Auto-select the most recent shipment
+        if (shipmentList.length > 0) {
+          setSelectedShipment(shipmentList[0]);
         }
       } catch (err) {
         console.error('Error fetching shipments:', err);
@@ -101,7 +100,6 @@ const DriverDashboard = () => {
     switch (status) {
       case 'pending': return 'bg-forensic-sepia-warn/20 text-forensic-sepia-warn border-forensic-sepia-warn/30';
       case 'in_transit': return 'bg-forensic-orange/20 text-forensic-orange border-forensic-orange/30';
-      case 'delivered': return 'bg-forensic-green-live/20 text-forensic-green-live border-forensic-green-live/30';
       default: return 'bg-white/10 text-forensic-text-dim border-white/20';
     }
   };
@@ -110,7 +108,6 @@ const DriverDashboard = () => {
     switch (status) {
       case 'pending': return <Clock className="w-4 h-4" strokeWidth={1.5} />;
       case 'in_transit': return <Truck className="w-4 h-4" strokeWidth={1.5} />;
-      case 'delivered': return <CheckCircle className="w-4 h-4" strokeWidth={1.5} />;
       default: return <Package className="w-4 h-4" strokeWidth={1.5} />;
     }
   };

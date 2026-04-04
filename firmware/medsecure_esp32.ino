@@ -16,6 +16,7 @@
  */
 
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <Wire.h>
 #include <TinyGPS++.h>
@@ -27,7 +28,8 @@
 
 const char* WIFI_SSID     = "YOUR_WIFI_SSID";
 const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
-const char* SERVER_URL    = "http://YOUR_SERVER_IP:8000";
+// Use HTTPS for Railway deployment (no port needed)
+const char* SERVER_URL    = "https://YOUR_RAILWAY_URL.up.railway.app";
 const char* DEVICE_ID     = "BOX_001";
 
 #define DHT_PIN   4
@@ -40,7 +42,7 @@ const char* DEVICE_ID     = "BOX_001";
 #define MPU_ADDR  0x68
 
 // Servo angles
-#define LOCK_POS   90
+#define LOCK_POS   0
 #define UNLOCK_POS 180
 
 // Sweep speed: degrees per millisecond  (lower = slower/smoother)
@@ -107,40 +109,35 @@ void servoDetach() {
   }
 }
 
-// Request a move. Returns immediately — actual motion happens in updateServo().
+// Move servo to target position (blocking) — needed because HTTP calls block the loop
 void servoMoveTo(int targetPos) {
-  if (targetPos == servoCurrentPos && !servoMoving) return;  // FIX 3: skip if already there
-  servoTargetPos = targetPos;
-  servoMoving    = true;
+  if (targetPos == servoCurrentPos && !servoMoving) return;
+  
+  Serial.printf("[SERVO] Moving: %d -> %d\n", servoCurrentPos, targetPos);
   servoAttachIfNeeded();
-  Serial.printf("[SERVO] Move requested: %d -> %d\n", servoCurrentPos, targetPos);
+  
+  // Blocking sweep — required because HTTP blocks loop() for seconds
+  while (servoCurrentPos != targetPos) {
+    if (servoCurrentPos < targetPos) {
+      servoCurrentPos += SERVO_STEP_DEG;
+      if (servoCurrentPos > targetPos) servoCurrentPos = targetPos;
+    } else {
+      servoCurrentPos -= SERVO_STEP_DEG;
+      if (servoCurrentPos < targetPos) servoCurrentPos = targetPos;
+    }
+    lockServo.write(servoCurrentPos);
+    delay(SERVO_STEP_MS);
+  }
+  
+  servoTargetPos = targetPos;
+  servoMoving = false;
+  delay(50);
+  servoDetach();
+  Serial.printf("[SERVO] Reached position %d — PWM detached\n", servoCurrentPos);
 }
 
-// FIX 2: Non-blocking sweep — call this every loop() iteration
-void updateServo() {
-  if (!servoMoving) return;
-
-  unsigned long now = millis();
-  if (now - lastServoStep < (unsigned long)SERVO_STEP_MS) return;
-  lastServoStep = now;
-
-  if (servoCurrentPos < servoTargetPos) {
-    servoCurrentPos += SERVO_STEP_DEG;
-    if (servoCurrentPos > servoTargetPos) servoCurrentPos = servoTargetPos;
-  } else if (servoCurrentPos > servoTargetPos) {
-    servoCurrentPos -= SERVO_STEP_DEG;
-    if (servoCurrentPos < servoTargetPos) servoCurrentPos = servoTargetPos;
-  }
-
-  lockServo.write(servoCurrentPos);
-
-  if (servoCurrentPos == servoTargetPos) {
-    servoMoving = false;
-    delay(50);          // let arm settle at final angle
-    servoDetach();      // FIX 4: cut PWM — eliminates idle jitter completely
-    Serial.printf("[SERVO] Reached position %d — PWM detached\n", servoCurrentPos);
-  }
-}
+// updateServo() is no longer needed — servoMoveTo() is now blocking
+// Kept for reference but not called in loop()
 
 // ==================== SETUP ====================
 
@@ -178,9 +175,6 @@ void setup() {
 
 void loop() {
   unsigned long now = millis();
-
-  // Always run the non-blocking servo updater first
-  updateServo();
 
   // Read sensors
   readDHT();
@@ -273,9 +267,13 @@ void readMPU6050() {
 
 // ==================== HTTP ====================
 
+// WiFiClientSecure for HTTPS connections
+WiFiClientSecure secureClient;
+
 void sendSensorData() {
+  secureClient.setInsecure();  // Skip certificate verification (for Railway)
   HTTPClient http;
-  http.begin(String(SERVER_URL) + "/data");
+  http.begin(secureClient, String(SERVER_URL) + "/data");
   http.addHeader("Content-Type", "application/json");
   http.setTimeout(HTTP_TIMEOUT);
 
@@ -302,32 +300,44 @@ void sendSensorData() {
 }
 
 void checkCommand() {
+  secureClient.setInsecure();  // Skip certificate verification (for Railway)
   HTTPClient http;
-  http.begin(String(SERVER_URL) + "/command?device_id=" + DEVICE_ID);
+  String url = String(SERVER_URL) + "/command?device_id=" + DEVICE_ID;
+  Serial.printf("[CMD] Fetching: %s\n", url.c_str());
+  
+  http.begin(secureClient, url);
   http.setTimeout(HTTP_TIMEOUT);
   int code = http.GET();
 
+  Serial.printf("[CMD] HTTP code: %d\n", code);
+
   if (code == 200) {
+    String response = http.getString();
+    Serial.printf("[CMD] Response: %s\n", response.c_str());
+    
     StaticJsonDocument<128> doc;
-    if (!deserializeJson(doc, http.getString())) {
+    DeserializationError err = deserializeJson(doc, response);
+    if (err) {
+      Serial.printf("[CMD] JSON parse error: %s\n", err.c_str());
+    } else {
       bool newLock     = doc["lock"]     | true;
       bool newOverride = doc["override"] | false;
+      
+      Serial.printf("[CMD] Parsed: lock=%d override=%d | Current: isLocked=%d overrideActive=%d\n", 
+                    newLock, newOverride, isLocked, overrideActive);
 
       if (newOverride) {
         if (!overrideActive) {
           Serial.println("[CMD] Override ACTIVE — unlocking");
           overrideActive = true;
           isLocked = false;
-          servoMoveTo(UNLOCK_POS);   // FIX 3: only move once when state changes
+          servoMoveTo(UNLOCK_POS);
         }
-        // Do NOT keep calling servoMoveTo() while override is already active
       } else {
         if (overrideActive) {
           overrideActive = false;
-          // Fall through to normal lock logic below
         }
 
-        // FIX 3: only call servoMoveTo() when the desired state differs from current
         if (newLock && !isLocked) {
           Serial.println("[CMD] Locking");
           isLocked = true;
@@ -337,9 +347,12 @@ void checkCommand() {
           isLocked = false;
           servoMoveTo(UNLOCK_POS);
         }
-        // If newLock == isLocked: state unchanged, do nothing — no servo movement
       }
     }
+  } else if (code < 0) {
+    Serial.printf("[CMD] Connection error: %s\n", http.errorToString(code).c_str());
+  } else {
+    Serial.printf("[CMD] Unexpected HTTP code: %d\n", code);
   }
   http.end();
 }
