@@ -14,7 +14,7 @@ const Layout = () => {
           }}
         />
         <Sidebar />
-        <main className="ml-56 p-6 min-h-screen relative z-10">
+        <main className="lg:ml-56 p-4 lg:p-6 pt-16 lg:pt-6 min-h-screen relative z-10">
           <Outlet />
         </main>
       </div>

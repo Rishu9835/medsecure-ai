@@ -175,16 +175,16 @@ const Login = () => {
         }}
       />
 
-      {/* Status Indicators (Top Corner) */}
-      <div className="fixed top-6 left-6 flex items-center gap-3 z-10">
+      {/* Status Indicators (Top Corner) - hidden on very small screens */}
+      <div className="fixed top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2 sm:gap-3 z-10">
         <div className="w-2 h-2 bg-forensic-orange animate-pulse shadow-forensic-glow"></div>
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-forensic-text-muted">
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] text-forensic-text-muted hidden sm:block">
           SIGNAL_ACQUIRED // PORT:8080
         </span>
       </div>
 
-      {/* Metadata (Top Right) */}
-      <div className="fixed top-6 right-6 flex items-center gap-4 z-10">
+      {/* Metadata (Top Right) - hidden on mobile */}
+      <div className="fixed top-4 right-4 sm:top-6 sm:right-6 items-center gap-4 z-10 hidden md:flex">
         <div className="text-right">
           <div className="font-mono text-[10px] text-forensic-text-muted uppercase tracking-wide">GEO_LOCK: LAT 21.7128° N</div>
           <div className="font-mono text-[10px] text-forensic-text-muted uppercase tracking-wide">STATUS: ENCRYPTED_LINK_ESTABLISHED</div>
@@ -192,12 +192,12 @@ const Login = () => {
         <Shield className="w-5 h-5 text-forensic-orange" strokeWidth={1.5} />
       </div>
 
-      {/* Footer Metadata */}
-      <div className="fixed bottom-6 left-6 font-mono text-[10px] text-forensic-text-muted uppercase tracking-wide">
+      {/* Footer Metadata - hidden on mobile */}
+      <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 font-mono text-[9px] sm:text-[10px] text-forensic-text-muted uppercase tracking-wide hidden sm:block">
         ©2026 LOGICX // CLASSIFIED_FORENSICS
       </div>
 
-      <div className="fixed bottom-6 right-6 font-mono text-[10px] text-forensic-text-muted uppercase tracking-wide">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 font-mono text-[9px] sm:text-[10px] text-forensic-text-muted uppercase tracking-wide hidden sm:block">
         ENCRYPTION_MODE // DATA_CUSTODY
       </div>
 
@@ -213,7 +213,7 @@ const Login = () => {
         </div>
 
         {/* Form Container */}
-        <div className="bg-forensic-bg-elevated border border-white/10 shadow-forensic-float p-8">
+        <div className="bg-forensic-bg-elevated border border-white/10 shadow-forensic-float p-6 sm:p-8">
           {/* Orange accent border */}
           <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-forensic-orange to-transparent opacity-30"></div>
           

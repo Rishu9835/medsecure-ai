@@ -274,28 +274,28 @@ const DriverDashboard = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-forensic-text uppercase tracking-forensic">DRIVER DASHBOARD</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-forensic-text uppercase tracking-forensic">DRIVER DASHBOARD</h1>
           <p className="text-xs text-forensic-text-dim font-mono mt-1 tracking-wide uppercase">
             SHIPMENT: {selectedShipment?.unique_id || 'N/A'} | STATUS: {selectedShipment?.status?.replace('_', ' ').toUpperCase() || 'N/A'}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* Change Shipment Button */}
           <button 
             onClick={() => setDataLoaded(false)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 text-forensic-text-dim border border-white/10 hover:bg-white/10 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-white/5 text-forensic-text-dim border border-white/10 hover:bg-white/10 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
           >
             <Package className="w-4 h-4" strokeWidth={1.5} />
-            CHANGE
+            <span className="hidden sm:inline">CHANGE</span>
           </button>
           <button 
             onClick={fetchData}
-            className="flex items-center gap-2 px-4 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium"
           >
             <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
-            REFRESH
+            <span className="hidden sm:inline">REFRESH</span>
           </button>
         </div>
       </div>
@@ -303,7 +303,7 @@ const DriverDashboard = () => {
       {/* Active Shipment Banner */}
       {selectedShipment && (
         <Card className="p-4">
-          <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wide flex items-center gap-2 border ${getStatusColor(selectedShipment.status)}`}>
                 {getStatusIcon(selectedShipment.status)}
@@ -314,7 +314,7 @@ const DriverDashboard = () => {
                 <p className="text-xs text-forensic-text-dim font-mono">{selectedShipment.customer_phone}</p>
               </div>
             </div>
-            <div className="flex items-center gap-6 text-xs text-forensic-text-dim font-mono">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs text-forensic-text-dim font-mono">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-forensic-green-live" strokeWidth={1.5} />
                 <span>GEOFENCE: {selectedShipment.radius}M</span>

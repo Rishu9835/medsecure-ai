@@ -72,16 +72,16 @@ const Analytics = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/5 pb-4 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-forensic-text uppercase tracking-forensic">ANALYTICS</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-forensic-text uppercase tracking-forensic">ANALYTICS</h1>
           <p className="text-xs text-forensic-text-dim font-mono mt-1 tracking-wide uppercase">
             DATA ANALYSIS // PATTERN RECOGNITION
           </p>
         </div>
         <button
           onClick={fetchAnalytics}
-          className="flex items-center gap-2 px-4 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+          className="flex items-center gap-2 px-4 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium self-start sm:self-auto"
         >
           <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
           REFRESH

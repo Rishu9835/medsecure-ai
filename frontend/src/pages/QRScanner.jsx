@@ -149,7 +149,7 @@ const QRScanner = () => {
     <div className="space-y-6 animate-fade-in max-w-2xl mx-auto">
       {/* Header */}
       <div className="border-b border-white/5 pb-4">
-        <h1 className="text-2xl font-bold text-forensic-text uppercase tracking-forensic">QR SCANNER</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-forensic-text uppercase tracking-forensic">QR SCANNER</h1>
         <p className="text-xs text-forensic-text-dim font-mono mt-1 tracking-wide uppercase">
           FIELD VERIFICATION TERMINAL // UNLOCK PROTOCOL
         </p>

@@ -329,29 +329,29 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-forensic-text uppercase tracking-forensic">CASE DASHBOARD</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-forensic-text uppercase tracking-forensic">CASE DASHBOARD</h1>
           <p className="text-xs text-forensic-text-dim font-mono mt-1 tracking-wide uppercase">
             SHIPMENT: {selectedShipment?.unique_id || 'N/A'} | STATUS: {selectedShipment?.status?.replace('_', ' ').toUpperCase() || 'N/A'}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* Change Shipment Button */}
           <button 
             onClick={() => setDataLoaded(false)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 text-forensic-text-dim border border-white/10 hover:bg-white/10 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-white/5 text-forensic-text-dim border border-white/10 hover:bg-white/10 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
           >
             <Package className="w-4 h-4" strokeWidth={1.5} />
-            CHANGE
+            <span className="hidden sm:inline">CHANGE</span>
           </button>
           {/* Tamper Alerts Button */}
           <button 
             onClick={() => setShowTamperModal(true)}
-            className="relative flex items-center gap-2 px-4 py-2 bg-forensic-blood-red/20 text-forensic-blood-red border border-forensic-blood-red/30 hover:bg-forensic-blood-red/30 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+            className="relative flex items-center gap-2 px-3 py-2 bg-forensic-blood-red/20 text-forensic-blood-red border border-forensic-blood-red/30 hover:bg-forensic-blood-red/30 transition-all duration-100 uppercase text-xs tracking-wide font-medium"
           >
             <ShieldAlert className="w-4 h-4" strokeWidth={1.5} />
-            ANOMALIES
+            <span className="hidden sm:inline">ANOMALIES</span>
             {unreadTamperCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-forensic-orange text-forensic-bg text-xs font-bold w-5 h-5 flex items-center justify-center animate-pulse-glow border border-forensic-orange/50">
                 {unreadTamperCount}
@@ -360,10 +360,10 @@ const AdminDashboard = () => {
           </button>
           <button 
             onClick={fetchData}
-            className="flex items-center gap-2 px-4 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-forensic-orange/20 text-forensic-orange border border-forensic-orange/30 hover:bg-forensic-orange/30 hover:shadow-forensic-glow transition-all duration-100 uppercase text-xs tracking-wide font-medium"
           >
             <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
-            REFRESH
+            <span className="hidden sm:inline">REFRESH</span>
           </button>
         </div>
       </div>
@@ -371,7 +371,7 @@ const AdminDashboard = () => {
       {/* Active Shipment Banner */}
       {selectedShipment && (
         <Card className="p-4">
-          <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wide flex items-center gap-2 border ${getStatusColor(selectedShipment.status)}`}>
                 {getStatusIcon(selectedShipment.status)}
@@ -382,7 +382,7 @@ const AdminDashboard = () => {
                 <p className="text-xs text-forensic-text-dim font-mono">{selectedShipment.customer_phone}</p>
               </div>
             </div>
-            <div className="flex items-center gap-6 text-xs text-forensic-text-dim font-mono">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs text-forensic-text-dim font-mono">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-forensic-green-live" strokeWidth={1.5} />
                 <span>GEOFENCE: {selectedShipment.radius}M</span>
