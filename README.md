@@ -243,19 +243,9 @@ curl -X POST http://localhost:8000/data \
 curl http://localhost:8000/command?device_id=BOX_001
 ```
 
-## 📋 Default Test Accounts
-
-Create via signup:
-- Admin: `admin@test.com` / `password` / role: `admin`
-- Driver: `driver@test.com` / `password` / role: `driver`
-
 ## 🛡️ Security Notes
 
 - Change `SECRET_KEY` in production
 - Use HTTPS in production
 - Store credentials in environment variables
 - Enable CORS restrictions for production domain
-
-## 📝 License
-
-MIT License - Free to use and modify.
