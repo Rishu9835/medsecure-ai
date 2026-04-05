@@ -7,7 +7,7 @@ from routers import auth, admin, device, shipment, otp
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="MedSecure AI API",
+    title="Aegix AI API",
     description="IoT Secure Delivery Box Backend",
     version="1.0.0"
 )
@@ -31,7 +31,7 @@ app.include_router(otp.router)
 @app.get("/")
 def root():
     return {
-        "name": "MedSecure AI API",
+        "name": "Aegix AI API",
         "version": "1.0.0",
         "status": "running"
     }

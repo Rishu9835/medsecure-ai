@@ -1,5 +1,5 @@
 /*
- * MedSecure AI - ESP32 Firmware  (servo-jitter-fixed v2)
+ * Aegix AI - ESP32 Firmware  (servo-jitter-fixed v2)
  *
  * Fixes applied vs original:
  *   1. Timer changed from 0 → 3  (avoids WiFi internal timer conflict)
@@ -144,7 +144,7 @@ void servoMoveTo(int targetPos) {
 void setup() {
   Serial.begin(115200);
   Serial.println("\n========================================");
-  Serial.println("   MedSecure AI - ESP32 (jitter-fixed)");
+  Serial.println("   Aegix AI - ESP32 (jitter-fixed)");
   Serial.println("========================================\n");
 
   Wire.begin(MPU_SDA, MPU_SCL);

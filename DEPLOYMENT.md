@@ -1,4 +1,4 @@
-# Deployment Guide - MedSecure AI
+# Deployment Guide - Aegix AI
 
 ## Step 1: Deploy Backend on Railway
 

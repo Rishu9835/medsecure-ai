@@ -1,5 +1,5 @@
 """
-Brevo Email Service for MedSecure AI
+Brevo Email Service for Aegix AI
 Sends alerts to admin email from database
 """
 
@@ -14,7 +14,7 @@ BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
 
 # Sender info - MUST use verified sender from Brevo
 SENDER_EMAIL = "rishuraj9431@gmail.com"
-SENDER_NAME = "MedSecure AI Alerts"
+SENDER_NAME = "Aegix AI Alerts"
 
 
 def send_email(to_email: str, subject: str, html_content: str, to_name: str = "") -> dict:
@@ -130,7 +130,7 @@ def send_safe_score_alert(to_email: str, score: float, device_id: str, issues: l
                 </p>
             </div>
             <div class="footer">
-                MedSecure AI - Secure Medical Delivery System<br>
+                Aegix AI - Secure Medical Delivery System<br>
                 This is an automated alert. Do not reply.
             </div>
         </div>
@@ -140,7 +140,7 @@ def send_safe_score_alert(to_email: str, score: float, device_id: str, issues: l
     
     return send_email(
         to_email=to_email,
-        subject=f"🚨 MedSecure Alert: Safe Score Critical ({score:.0f}/100) - {device_id}",
+        subject=f"🚨 Aegix Alert: Safe Score Critical ({score:.0f}/100) - {device_id}",
         html_content=html_content
     )
 
@@ -203,7 +203,7 @@ def send_tamper_alert_email(to_email: str, alert_type: str, message: str,
                 </div>
             </div>
             <div class="footer">
-                MedSecure AI - Secure Medical Delivery System<br>
+                Aegix AI - Secure Medical Delivery System<br>
                 This is an automated security alert.
             </div>
         </div>
@@ -213,7 +213,7 @@ def send_tamper_alert_email(to_email: str, alert_type: str, message: str,
     
     return send_email(
         to_email=to_email,
-        subject=f"{alert_emoji} MedSecure Tamper Alert: {alert_type} - {device_id}",
+        subject=f"{alert_emoji} Aegix Tamper Alert: {alert_type} - {device_id}",
         html_content=html_content
     )
 

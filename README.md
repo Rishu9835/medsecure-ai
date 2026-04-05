@@ -1,4 +1,4 @@
-# MedSecure AI - IoT Secure Delivery Box System
+# Aegix AI - IoT Secure Delivery Box System
 
 A production-ready IoT system for secure medical deliveries with real-time tracking, temperature monitoring, OTP verification, and geofencing.
 
@@ -46,7 +46,7 @@ COLD_CHAINV2/
 │   ├── package.json
 │   └── vite.config.js
 └── firmware/
-    └── medsecure_esp32.ino  # ESP32 Arduino firmware
+    └── aegix_esp32.ino  # ESP32 Arduino firmware
 ```
 
 ## 🚀 Quick Start
@@ -94,7 +94,7 @@ Frontend runs at: `http://localhost:5173`
    - ESP32Servo
    - ArduinoJson
    - Wire (built-in)
-3. Edit `firmware/medsecure_esp32.ino`:
+3. Edit `firmware/aegix_esp32.ino`:
    - Set `WIFI_SSID` and `WIFI_PASSWORD`
    - Set `SERVER_URL` to your backend IP
 4. Upload to ESP32
@@ -214,7 +214,7 @@ SECRET_KEY = "your-secret-key"  # Change in production!
 const API_BASE = 'http://localhost:8000';  // Your backend URL
 ```
 
-### ESP32 (`firmware/medsecure_esp32.ino`)
+### ESP32 (`firmware/aegix_esp32.ino`)
 ```cpp
 const char* WIFI_SSID = "YOUR_WIFI_SSID";
 const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";

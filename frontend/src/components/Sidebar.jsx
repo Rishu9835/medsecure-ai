@@ -64,7 +64,7 @@ const Sidebar = () => {
               <Shield className="w-6 h-6 text-forensic-orange" />
             </div>
             <div>
-              <h1 className="font-bold text-base tracking-forensic uppercase">MEDSECURE</h1>
+              <h1 className="font-bold text-base tracking-forensic uppercase">AEGIX</h1>
               <p className="text-xs text-forensic-text-dim uppercase font-mono tracking-wide">{user?.role} UNIT</p>
             </div>
           </div>

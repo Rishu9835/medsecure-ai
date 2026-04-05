@@ -1,5 +1,5 @@
 """
-Safe Score Calculator for MedSecure AI
+Safe Score Calculator for Aegix AI
 Calculates package safety score based on environmental conditions
 """
 

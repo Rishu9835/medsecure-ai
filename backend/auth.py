@@ -10,7 +10,7 @@ from models import User
 
 import os
 
-SECRET_KEY = os.getenv("SECRET_KEY", "medsecure-change-this-in-production")
+SECRET_KEY = os.getenv("SECRET_KEY", "aegix-change-this-in-production")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 

@@ -208,7 +208,7 @@ const Login = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-forensic-orange/10 border border-forensic-orange/30 mb-4">
             <Shield className="w-9 h-9 text-forensic-orange" strokeWidth={1.5} />
           </div>
-          <h1 className="text-xl font-bold text-forensic-text uppercase tracking-forensic mb-1">MEDSECURE</h1>
+          <h1 className="text-xl font-bold text-forensic-text uppercase tracking-forensic mb-1">AEGIX</h1>
           <p className="text-forensic-text-dim text-xs uppercase tracking-wide font-mono">INVESTIGATIVE_UNIT</p>
         </div>
 
