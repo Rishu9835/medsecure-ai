@@ -243,7 +243,7 @@ curl -X POST http://localhost:8000/data \
 curl http://localhost:8000/command?device_id=BOX_001
 ```
 
-## 🛡️ Security Notes
+## Security Notes
 
 - Change `SECRET_KEY` in production
 - Use HTTPS in production
